@@ -6,7 +6,6 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Omar
  */
-public class ConsultarAlumnos extends HttpServlet {
+public class Editaralumno extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,40 +31,46 @@ public class ConsultarAlumnos extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            //obtener el id del alumno que voy a borrar
+            int id;
+            id = Integer.parseInt(request.getParameter("id"));
+            System.out.println(id);
+            Alumno a = Acciones_Alumno.getAlumnoById(id);
+
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ConsultarAlumnos</title>");            
+            out.println("<title>Ficha de Cambios de Alumno</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Lista de todos los Alumnos</h1>");
-            //lista de todos los alumnos
-            List<Alumno> lista = Acciones_Alumno.getAllAlumnos();
-            out.println("<form method='post' name='formulario' >");
-            out.println("<table border=1 >");
+            out.println("<h1>Ficha del Alumno</h1>");
+            out.println("<form method='post' action='editar2' name='editar' >");
+            out.println("<table border='1' >");
             out.println("<tr>"
-                    + "<th>ID</th>"
-                    + "<th>Nombre</th>"
-                    + "<th>Password</th>"
-                    + "<th>Email</th>"
-                    + "<th>Pais</th>"
-                    + "</tr>");
-            //ahora necesito obtener todos los alumnos de la lista
-            for(Alumno a : lista){
-                out.println("<tr>"
-                        + "<td>"+a.getId()+"</td>"
-                        + "<td>"+a.getNombre()+"</td>"
-                        + "<td>"+a.getPassword()+"</td>"
-                        + "<td>"+a.getEmail()+"</td>"
-                        + "<td>"+a.getPais()+"</td>"
-                        + "<td><a href='Editaralumno?id="+a.getId()+"' >Editar Alumno</a></td>"
-                        + "<td><a href='Borraralumno?id="+a.getId()+"' >Borrar Alumno</a></td>"
-                        + "</tr>");
-
-            }
+                    + "<td></td>"
+                    + "<td> <input type='hidden' name='id2' value='"+a.getId()+"' > </td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Nombre: </td>"
+                    + "<td> <input type='text' name='nombre2' value='"+a.getNombre()+"' > </td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Password</td>"
+                    + "<td> <input type='password' name='password2' value='"+a.getPassword()+"' > </td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Email</td>"
+                    + "<td> <input type='email' name='email2' value='"+a.getEmail()+"' > </td>"
+                    + "</tr>"
+                    + "<tr><td>Pais:</td> <td><select name='pais2'>"
+                            + "<option>India</option>"
+                            + "<option>Mexico</option>"
+                            + "<option>Al que nadie quiere</option>"
+                            + "<option>Por ahi</option>"
+                            + "</select></td> </tr>"
+                    + "<tr><td colspan='2'><input type='submit' value='Editar Datos' ></td></tr>");
             out.println("</table>");
             out.println("</form>");
-            out.println("<a href='index.html' >Regresar al Menu</a>");
             out.println("</body>");
             out.println("</html>");
         }

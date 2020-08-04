@@ -219,7 +219,7 @@ public class Acciones_Alumno{
             //obtener la conexion
             Connection con = Acciones_Alumno.getConnection();
             //querry
-            String q = "select * from Alumnos";
+            String q = "select * from alumnos";
             //preparar la sentencia
             PreparedStatement ps = con.prepareStatement(q);
 

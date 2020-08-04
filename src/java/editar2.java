@@ -6,7 +6,6 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Omar
  */
-public class ConsultarAlumnos extends HttpServlet {
+public class editar2 extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,42 +31,38 @@ public class ConsultarAlumnos extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ConsultarAlumnos</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Lista de todos los Alumnos</h1>");
-            //lista de todos los alumnos
-            List<Alumno> lista = Acciones_Alumno.getAllAlumnos();
-            out.println("<form method='post' name='formulario' >");
-            out.println("<table border=1 >");
-            out.println("<tr>"
-                    + "<th>ID</th>"
-                    + "<th>Nombre</th>"
-                    + "<th>Password</th>"
-                    + "<th>Email</th>"
-                    + "<th>Pais</th>"
-                    + "</tr>");
-            //ahora necesito obtener todos los alumnos de la lista
-            for(Alumno a : lista){
-                out.println("<tr>"
-                        + "<td>"+a.getId()+"</td>"
-                        + "<td>"+a.getNombre()+"</td>"
-                        + "<td>"+a.getPassword()+"</td>"
-                        + "<td>"+a.getEmail()+"</td>"
-                        + "<td>"+a.getPais()+"</td>"
-                        + "<td><a href='Editaralumno?id="+a.getId()+"' >Editar Alumno</a></td>"
-                        + "<td><a href='Borraralumno?id="+a.getId()+"' >Borrar Alumno</a></td>"
-                        + "</tr>");
 
+            //primero obtener las variables
+            int id;
+            String nom, pass, email, pais;
+
+            id = Integer.parseInt(request.getParameter("id2"));
+            nom = request.getParameter("nombre2");
+            pass = request.getParameter("password2");
+            email = request.getParameter("email2");
+            pais = request.getParameter("pais2");
+
+            //objeto de alumno
+            Alumno a = new Alumno();
+            //envio los elementos
+            a.setId(id);
+            a.setNombre(nom);
+            a.setPassword(pass);
+            a.setEmail(email);
+            a.setPais(pais);
+
+            //ejecuto la actualizacion
+            int estatus = Acciones_Alumno.Actualizar_alumno(a);
+
+            if(estatus > 0){
+
+            response.sendRedirect("ConsultarAlumnos");
+            }else{
+                out.println("<h1>No se pudo realizar el cambio</h1>"
+                        + "<a href = 'index.html' >Regresar al menu principal</a>");
             }
-            out.println("</table>");
-            out.println("</form>");
-            out.println("<a href='index.html' >Regresar al Menu</a>");
-            out.println("</body>");
-            out.println("</html>");
+
+
         }
     }
 
